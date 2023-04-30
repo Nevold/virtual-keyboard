@@ -1,6 +1,6 @@
 import './style.scss';
-import { keyLayoutEn, keyLayoutShiftUp, keyLayoutShiftDown } from './shared/english-layout';
-import { keyLayoutRu, keyLayoutRuUp } from './shared/russian-layout';
+import { keyLayoutEn, keyLayoutShiftUp, keyLayoutShiftDown } from './db/english-layout';
+import { keyLayoutRu, keyLayoutRuUp } from './db/russian-layout';
 
 const Keyboard = {
   elements: {
