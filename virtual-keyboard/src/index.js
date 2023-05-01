@@ -270,7 +270,13 @@ const Keyboard = {
             let tempText = [...this.properties.value];
             tempText.splice(this.cursorPosition - 1, 0, keyElement.textContent);
             tempText = tempText.join('');
-            this.properties.value = tempText;
+            console.log(this.cursorPosition);
+            if (this.cursorPosition > 1) {
+              this.properties.value = tempText;
+            } else {
+              this.properties.value += keyElement.textContent;
+              this.cursorPosition = this.properties.value.length;
+            }
             this.triggerEvent('oninput');
             textarea.selectionStart = textarea.selectionEnd = this.cursorPosition;
             textarea.focus();
@@ -313,12 +319,14 @@ const Keyboard = {
           break;
 
         case 'enter':
+          this.cursorPosition = 0;
           this.properties.value += '\n';
           this.triggerEvent('oninput');
           key.classList.add('keyboard__key--active');
           break;
 
         case ' ':
+          this.cursorPosition = 0;
           this.properties.value += ' ';
           this.triggerEvent('oninput');
           keySpace.classList.add('keyboard__key--active');
@@ -387,12 +395,14 @@ const Keyboard = {
 
         case 'tab':
           e.preventDefault();
+          this.cursorPosition = 0;
           this.properties.value += '    ';
           this.triggerEvent('oninput');
           key.classList.add('keyboard__key--active');
           break;
 
         default:
+          this.cursorPosition = 0;
           if (this.properties.lang) {
             switch (e.code.toLocaleLowerCase()) {
               case 'bracketleft':
