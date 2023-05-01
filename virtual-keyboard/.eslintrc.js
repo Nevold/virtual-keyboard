@@ -14,6 +14,7 @@ module.exports = {
     'no-unused-expressions': 'off',
     'no-plusplus': 'off',
     'no-console': 'warn',
+    'no-multi-assign': 'off',
     'max-len': ['warn', { code: 120 }],
     indent: [
       'warn',

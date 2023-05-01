@@ -18,6 +18,7 @@ const Keyboard = {
     capsLock: false,
     lang: false,
   },
+  cursorPosition: 0,
 
   init() {
     this.elements.main = document.createElement('div');
@@ -52,11 +53,17 @@ const Keyboard = {
     this.open(textarea.value, (currentValue) => {
       textarea.value = currentValue;
     });
+
+    textarea.addEventListener('mouseup', () => {
+      this.cursorPosition = textarea.selectionStart;
+      console.log(this.cursorPosition, '!');
+    });
   },
 
   createKeys() {
     const fragment = document.createDocumentFragment();
     const keyLayout = keyLayoutEn;
+    const textarea = document.querySelector('.use-keyboard-input');
 
     keyLayout.forEach((key) => {
       let selectionStart;
@@ -81,8 +88,20 @@ const Keyboard = {
           keyElement.innerHTML = 'Backspace';
 
           keyElement.addEventListener('click', () => {
-            this.properties.value = this.properties.value.substring(0, this.properties.value.length - 1);
+            let tempText = [...this.properties.value];
+            tempText.splice(this.cursorPosition - 1, 1);
+            tempText = tempText.join('');
+            if (this.cursorPosition > 0) {
+              this.cursorPosition -= 1;
+            }
+            console.log(this.cursorPosition);
+            this.properties.value =
+              this.cursorPosition > 0 ? tempText : this.properties.value.substring(0, this.properties.value.length - 1);
             this.triggerEvent('oninput');
+            if (this.cursorPosition > 0) {
+              textarea.selectionStart = textarea.selectionEnd = this.cursorPosition;
+            }
+            textarea.focus();
           });
           break;
 
@@ -110,8 +129,16 @@ const Keyboard = {
           keyElement.innerHTML = '';
 
           keyElement.addEventListener('click', () => {
-            this.properties.value += ' ';
+            this.cursorPosition += 1;
+            let tempText = [...this.properties.value];
+            tempText.splice(this.cursorPosition - 1, 0, ' ');
+            tempText = tempText.join('');
+            this.properties.value = tempText;
             this.triggerEvent('oninput');
+            if (this.cursorPosition >= 0) {
+              textarea.selectionStart = textarea.selectionEnd = this.cursorPosition;
+            }
+            textarea.focus();
           });
           break;
 
@@ -119,8 +146,14 @@ const Keyboard = {
           keyElement.classList.add('func-keys');
           keyElement.innerHTML = '&#9650;';
           keyElement.addEventListener('click', () => {
-            this.properties.value += '▲';
+            this.cursorPosition += 1;
+            let tempText = [...this.properties.value];
+            tempText.splice(this.cursorPosition - 1, 0, '▲');
+            tempText = tempText.join('');
+            this.properties.value = tempText;
             this.triggerEvent('oninput');
+            textarea.selectionStart = textarea.selectionEnd = this.cursorPosition;
+            textarea.focus();
           });
           break;
 
@@ -128,8 +161,14 @@ const Keyboard = {
           keyElement.classList.add('func-keys');
           keyElement.innerHTML = '&#9668;';
           keyElement.addEventListener('click', () => {
-            this.properties.value += '◄';
+            this.cursorPosition += 1;
+            let tempText = [...this.properties.value];
+            tempText.splice(this.cursorPosition - 1, 0, '◄');
+            tempText = tempText.join('');
+            this.properties.value = tempText;
             this.triggerEvent('oninput');
+            textarea.selectionStart = textarea.selectionEnd = this.cursorPosition;
+            textarea.focus();
           });
           break;
 
@@ -137,8 +176,14 @@ const Keyboard = {
           keyElement.classList.add('func-keys');
           keyElement.innerHTML = '&#9660;';
           keyElement.addEventListener('click', () => {
-            this.properties.value += '▼';
+            this.cursorPosition += 1;
+            let tempText = [...this.properties.value];
+            tempText.splice(this.cursorPosition - 1, 0, '▼');
+            tempText = tempText.join('');
+            this.properties.value = tempText;
             this.triggerEvent('oninput');
+            textarea.selectionStart = textarea.selectionEnd = this.cursorPosition;
+            textarea.focus();
           });
           break;
 
@@ -146,8 +191,14 @@ const Keyboard = {
           keyElement.classList.add('func-keys');
           keyElement.innerHTML = '&#9658;';
           keyElement.addEventListener('click', () => {
-            this.properties.value += '►';
+            this.cursorPosition += 1;
+            let tempText = [...this.properties.value];
+            tempText.splice(this.cursorPosition - 1, 0, '►');
+            tempText = tempText.join('');
+            this.properties.value = tempText;
             this.triggerEvent('oninput');
+            textarea.selectionStart = textarea.selectionEnd = this.cursorPosition;
+            textarea.focus();
           });
           break;
 
@@ -184,12 +235,15 @@ const Keyboard = {
           keyElement.innerHTML = 'Del';
 
           keyElement.addEventListener('click', () => {
-            const textarea = document.querySelector('textarea');
             if (textarea.selectionStart !== 0) selectionStart = textarea.selectionStart;
             const delCount = [...this.properties.value];
             delCount.splice(textarea.selectionStart === 0 ? selectionStart : textarea.selectionStart, 1);
             this.properties.value = delCount.join('');
             this.triggerEvent('oninput');
+            if (this.cursorPosition >= 0) {
+              textarea.selectionStart = textarea.selectionEnd = this.cursorPosition;
+            }
+            textarea.focus();
           });
           break;
 
@@ -198,16 +252,28 @@ const Keyboard = {
           keyElement.innerHTML = 'Tab';
 
           keyElement.addEventListener('click', () => {
-            this.properties.value += '    ';
+            this.cursorPosition += 2;
+            let tempText = [...this.properties.value];
+            tempText.splice(this.cursorPosition - 1, 0, '  ');
+            tempText = tempText.join('');
+            this.properties.value = tempText;
             this.triggerEvent('oninput');
+            textarea.selectionStart = textarea.selectionEnd = this.cursorPosition + 1;
+            textarea.focus();
           });
           break;
 
         default:
           keyElement.textContent = key.toLowerCase();
           keyElement.addEventListener('click', () => {
-            this.properties.value += keyElement.textContent;
+            this.cursorPosition += 1;
+            let tempText = [...this.properties.value];
+            tempText.splice(this.cursorPosition - 1, 0, keyElement.textContent);
+            tempText = tempText.join('');
+            this.properties.value = tempText;
             this.triggerEvent('oninput');
+            textarea.selectionStart = textarea.selectionEnd = this.cursorPosition;
+            textarea.focus();
           });
           break;
       }
@@ -311,7 +377,6 @@ const Keyboard = {
         case 'delete':
           key.classList.add('keyboard__key--active');
           {
-            const textarea = document.querySelector('textarea');
             if (textarea.selectionStart !== 0) selectionStart = textarea.selectionStart;
             const delCount = [...this.properties.value];
             delCount.splice(textarea.selectionStart === 0 ? selectionStart : textarea.selectionStart, 1);
