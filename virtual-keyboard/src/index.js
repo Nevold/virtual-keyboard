@@ -131,11 +131,14 @@ const Keyboard = {
             let tempText = [...this.properties.value];
             tempText.splice(this.cursorPosition - 1, 0, ' ');
             tempText = tempText.join('');
-            this.properties.value = tempText;
-            this.triggerEvent('oninput');
-            if (this.cursorPosition >= 0) {
-              textarea.selectionStart = textarea.selectionEnd = this.cursorPosition;
+            if (this.cursorPosition > 1) {
+              this.properties.value = tempText;
+            } else {
+              this.properties.value += ' ';
+              this.cursorPosition = this.properties.value.length;
             }
+            this.triggerEvent('oninput');
+            textarea.selectionStart = textarea.selectionEnd = this.cursorPosition;
             textarea.focus();
           });
           break;
@@ -148,7 +151,12 @@ const Keyboard = {
             let tempText = [...this.properties.value];
             tempText.splice(this.cursorPosition - 1, 0, '▲');
             tempText = tempText.join('');
-            this.properties.value = tempText;
+            if (this.cursorPosition > 1) {
+              this.properties.value = tempText;
+            } else {
+              this.properties.value += '▲';
+              this.cursorPosition = this.properties.value.length;
+            }
             this.triggerEvent('oninput');
             textarea.selectionStart = textarea.selectionEnd = this.cursorPosition;
             textarea.focus();
@@ -163,7 +171,12 @@ const Keyboard = {
             let tempText = [...this.properties.value];
             tempText.splice(this.cursorPosition - 1, 0, '◄');
             tempText = tempText.join('');
-            this.properties.value = tempText;
+            if (this.cursorPosition > 1) {
+              this.properties.value = tempText;
+            } else {
+              this.properties.value += '◄';
+              this.cursorPosition = this.properties.value.length;
+            }
             this.triggerEvent('oninput');
             textarea.selectionStart = textarea.selectionEnd = this.cursorPosition;
             textarea.focus();
@@ -178,7 +191,12 @@ const Keyboard = {
             let tempText = [...this.properties.value];
             tempText.splice(this.cursorPosition - 1, 0, '▼');
             tempText = tempText.join('');
-            this.properties.value = tempText;
+            if (this.cursorPosition > 1) {
+              this.properties.value = tempText;
+            } else {
+              this.properties.value += '▼';
+              this.cursorPosition = this.properties.value.length;
+            }
             this.triggerEvent('oninput');
             textarea.selectionStart = textarea.selectionEnd = this.cursorPosition;
             textarea.focus();
@@ -193,7 +211,12 @@ const Keyboard = {
             let tempText = [...this.properties.value];
             tempText.splice(this.cursorPosition - 1, 0, '►');
             tempText = tempText.join('');
-            this.properties.value = tempText;
+            if (this.cursorPosition > 1) {
+              this.properties.value = tempText;
+            } else {
+              this.properties.value += '►';
+              this.cursorPosition = this.properties.value.length;
+            }
             this.triggerEvent('oninput');
             textarea.selectionStart = textarea.selectionEnd = this.cursorPosition;
             textarea.focus();
@@ -254,7 +277,12 @@ const Keyboard = {
             let tempText = [...this.properties.value];
             tempText.splice(this.cursorPosition - 1, 0, '  ');
             tempText = tempText.join('');
-            this.properties.value = tempText;
+            if (this.cursorPosition > 2) {
+              this.properties.value = tempText;
+            } else {
+              this.properties.value += '  ';
+              this.cursorPosition = this.properties.value.length;
+            }
             this.triggerEvent('oninput');
             textarea.selectionStart = textarea.selectionEnd = this.cursorPosition + 1;
             textarea.focus();
