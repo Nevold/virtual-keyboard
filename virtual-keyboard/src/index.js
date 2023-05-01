@@ -56,7 +56,6 @@ const Keyboard = {
 
     textarea.addEventListener('mouseup', () => {
       this.cursorPosition = textarea.selectionStart;
-      console.log(this.cursorPosition, '!');
     });
   },
 
@@ -94,7 +93,6 @@ const Keyboard = {
             if (this.cursorPosition > 0) {
               this.cursorPosition -= 1;
             }
-            console.log(this.cursorPosition);
             this.properties.value =
               this.cursorPosition > 0 ? tempText : this.properties.value.substring(0, this.properties.value.length - 1);
             this.triggerEvent('oninput');
@@ -270,7 +268,6 @@ const Keyboard = {
             let tempText = [...this.properties.value];
             tempText.splice(this.cursorPosition - 1, 0, keyElement.textContent);
             tempText = tempText.join('');
-            console.log(this.cursorPosition);
             if (this.cursorPosition > 1) {
               this.properties.value = tempText;
             } else {
