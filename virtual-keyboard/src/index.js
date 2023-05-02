@@ -117,8 +117,23 @@ const Keyboard = {
           keyElement.classList.add('keyboard__key--wide', 'func-keys');
           keyElement.innerHTML = 'Enter';
           keyElement.addEventListener('click', () => {
-            this.properties.value += '\n';
-            this.triggerEvent('oninput');
+            if (this.cursorPosition === 0 && this.properties.value.length > 0) {
+              this.properties.value += '\n';
+            } else {
+              let tempText = [...this.properties.value];
+              tempText.splice(this.cursorPosition, 0, '\n');
+              tempText = tempText.join('');
+              this.properties.value = tempText;
+              this.triggerEvent('oninput');
+              if (this.cursorPosition === this.properties.value.length - 1) {
+                this.cursorPosition = this.properties.value.length;
+              } else {
+                this.cursorPosition += 1;
+              }
+
+              textarea.selectionStart = textarea.selectionEnd = this.cursorPosition;
+              textarea.focus();
+            }
           });
           break;
 
